@@ -10,18 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model List {
+  id        Int    @id @default(autoincrement())
+  titleList String @db.VarChar(250)
+  order     Int?
+  items     Item[]
+
+  @@map("list")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model Item {
+  id          Int       @id @default(autoincrement())
+  titleItem   String    @db.VarChar(250)
+  description String?
+  startDate   DateTime?
+  finalDate   DateTime?
+  order       Int?
+  List        List?     @relation(fields: [listId], references: [id])
+  listId      Int?
+
+  @@map("item")
 }
