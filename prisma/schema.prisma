@@ -25,9 +25,9 @@ model Item {
   description String?
   startDate   DateTime?
   finalDate   DateTime?
-  order       Int?
-  List        List?     @relation(fields: [listId], references: [id])
-  listId      Int?
+  order       Int
+  List        List      @relation(fields: [listId], references: [id])
+  listId      Int
 
   @@map("item")
 }
