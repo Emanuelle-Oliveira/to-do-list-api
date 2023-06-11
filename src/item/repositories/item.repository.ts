@@ -16,6 +16,15 @@ export class ItemRepository implements IItemRepository {
     return this.BuildEntity(item);
   }
 
+  async getOne(id: number): Promise<ItemEntity> {
+    const item = await this.prisma.item.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    return this.BuildEntity(item);
+  }
+
   async delete(id: number): Promise<ItemEntity> {
     const item = await this.prisma.item.delete({
       where: {
