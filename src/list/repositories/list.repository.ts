@@ -5,6 +5,7 @@ import { Injectable, Provider } from '@nestjs/common';
 import { Item, List } from '@prisma/client';
 import { ListEntity } from '../entities/list.entity';
 import { ItemEntity } from '../../item/entities/item.entity';
+import { IUpdateListPayload } from '../shared/iupdate-list.payload';
 
 @Injectable()
 export class ListRepository implements IListRepository {
@@ -15,6 +16,17 @@ export class ListRepository implements IListRepository {
       data: dto,
     });
     return this.BuildEntity(list);
+  }
+
+  async update(id: number, dto: IUpdateListPayload): Promise<ListEntity> {
+    const updatedList = await this.prisma.list.update({
+      where: {
+        id: id,
+      },
+      data: dto,
+    });
+
+    return this.BuildEntity(updatedList);
   }
 
   async getAll(): Promise<ListEntity[]> {

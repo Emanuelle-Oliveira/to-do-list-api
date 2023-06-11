@@ -4,6 +4,7 @@ import { IItemRepository } from './contract/iitem.repository';
 import { ICreateItemPayload } from '../shared/icreate-item-payload';
 import { Item } from '@prisma/client';
 import { ItemEntity } from '../entities/item.entity';
+import { IUpdateItemPayload } from '../shared/iupdate-item.payload';
 
 @Injectable()
 export class ItemRepository implements IItemRepository {
@@ -14,6 +15,16 @@ export class ItemRepository implements IItemRepository {
       data: dto,
     });
     return this.BuildEntity(item);
+  }
+
+  async update(id: number, dto: IUpdateItemPayload): Promise<ItemEntity> {
+    const updatedItem = await this.prisma.item.update({
+      where: {
+        id: id,
+      },
+      data: dto,
+    });
+    return this.BuildEntity(updatedItem);
   }
 
   async getOne(id: number): Promise<ItemEntity> {
