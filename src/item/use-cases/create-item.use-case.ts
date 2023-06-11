@@ -8,10 +8,12 @@ import { ItemEntity } from '../entities/item.entity';
 export class CreateItemUseCase implements ICreateItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
-  execute(dto: ICreateItemPayload): Promise<ItemEntity> {
+  async execute(dto: ICreateItemPayload): Promise<ItemEntity> {
     //TRATAMENTO DE ERRO
 
-    return this.itemRepository.create(dto);
+    const order = await this.itemRepository.count(dto.listId);
+
+    return this.itemRepository.create(dto, order);
   }
 
   //IMPLEMENTAR O TRATAMENTO DE ERRO CASO NÃO EXISTA ESSA LISTA COM ESSE ID

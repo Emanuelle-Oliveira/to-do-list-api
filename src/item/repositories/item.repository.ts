@@ -2,7 +2,7 @@ import { Injectable, Provider } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { IItemRepository } from './contract/iitem.repository';
 import { ICreateItemPayload } from '../shared/icreate-item-payload';
-import { Item } from '@prisma/client';
+import { Item, List } from '@prisma/client';
 import { ItemEntity } from '../entities/item.entity';
 import { IUpdateItemPayload } from '../shared/iupdate-item.payload';
 
@@ -10,11 +10,24 @@ import { IUpdateItemPayload } from '../shared/iupdate-item.payload';
 export class ItemRepository implements IItemRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: ICreateItemPayload): Promise<ItemEntity> {
+  async create(dto: ICreateItemPayload, order: number): Promise<ItemEntity> {
     const item = await this.prisma.item.create({
-      data: dto,
+      data: {
+        titleItem: dto.titleItem,
+        listId: dto.listId,
+        order: order,
+      },
     });
     return this.BuildEntity(item);
+  }
+
+  async count(listId: number): Promise<number> {
+    const result = await this.prisma.item.count({
+      where: {
+        listId: listId,
+      },
+    });
+    return result;
   }
 
   async update(id: number, dto: IUpdateItemPayload): Promise<ItemEntity> {

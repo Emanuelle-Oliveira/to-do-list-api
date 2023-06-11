@@ -8,9 +8,5 @@ export class CreateItemDto implements ICreateItemPayload {
 
   @IsNumber()
   @IsNotEmpty()
-  order: number;
-
-  @IsNumber()
-  @IsNotEmpty()
   listId: number;
 }
