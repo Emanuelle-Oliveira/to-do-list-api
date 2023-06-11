@@ -17,6 +17,16 @@ export class ListRepository implements IListRepository {
     return this.BuildEntity(list);
   }
 
+  async delete(id: number): Promise<ListEntity> {
+    const deletedList = await this.prisma.list.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return this.BuildEntity(deletedList);
+  }
+
   private BuildEntity(payload: List & { items?: Item[] }): ListEntity {
     let list = new ListEntity({
       id: payload.id,
@@ -27,7 +37,6 @@ export class ListRepository implements IListRepository {
     if (payload.items) {
       list = list.setItems(payload.items.map((i) => new ItemEntity(i)));
     }
-
     return list;
   }
 }

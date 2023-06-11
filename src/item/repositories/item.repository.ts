@@ -10,10 +10,19 @@ export class ItemRepository implements IItemRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: ICreateItemPayload): Promise<ItemEntity> {
-    const result = await this.prisma.item.create({
+    const item = await this.prisma.item.create({
       data: dto,
     });
-    return this.BuildEntity(result);
+    return this.BuildEntity(item);
+  }
+
+  async delete(id: number): Promise<ItemEntity> {
+    const item = await this.prisma.item.delete({
+      where: {
+        id: id,
+      },
+    });
+    return this.BuildEntity(item);
   }
 
   private BuildEntity(payload: Item): ItemEntity {

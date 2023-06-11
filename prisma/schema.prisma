@@ -26,7 +26,7 @@ model Item {
   startDate   DateTime?
   finalDate   DateTime?
   order       Int
-  List        List      @relation(fields: [listId], references: [id])
+  List        List      @relation(fields: [listId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Item_List")
   listId      Int
 
   @@map("item")
