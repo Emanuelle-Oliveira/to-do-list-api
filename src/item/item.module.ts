@@ -5,6 +5,7 @@ import { CreateItemUseCaseProvider } from './use-cases/create-item.use-case';
 import { DeleteItemUseCaseProvider } from './use-cases/delete-item.use-case';
 import { GetOneItemUseCaseProvider } from './use-cases/get-one-item.use-case';
 import { UpdateItemUseCaseProvider } from './use-cases/update-item.use-case';
+import { UpdateOrderItemUseCaseProvider } from './use-cases/update-order-item.use-case';
 
 @Module({
   controllers: [ItemController],
@@ -12,6 +13,7 @@ import { UpdateItemUseCaseProvider } from './use-cases/update-item.use-case';
     ItemRepositoryProvider,
     CreateItemUseCaseProvider,
     UpdateItemUseCaseProvider,
+    UpdateOrderItemUseCaseProvider,
     GetOneItemUseCaseProvider,
     DeleteItemUseCaseProvider,
   ],
@@ -19,6 +21,7 @@ import { UpdateItemUseCaseProvider } from './use-cases/update-item.use-case';
     ItemRepositoryProvider,
     CreateItemUseCaseProvider,
     UpdateItemUseCaseProvider,
+    UpdateOrderItemUseCaseProvider,
     GetOneItemUseCaseProvider,
     DeleteItemUseCaseProvider,
   ],

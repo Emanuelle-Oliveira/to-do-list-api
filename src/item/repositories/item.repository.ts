@@ -40,6 +40,18 @@ export class ItemRepository implements IItemRepository {
     return this.BuildEntity(updatedItem);
   }
 
+  async updateOrder(id: number, order: number): Promise<ItemEntity> {
+    const updatedItem = await this.prisma.item.update({
+      where: {
+        id: id,
+      },
+      data: {
+        order: order,
+      },
+    });
+    return this.BuildEntity(updatedItem);
+  }
+
   async getOne(id: number): Promise<ItemEntity> {
     const item = await this.prisma.item.findUnique({
       where: {
@@ -47,6 +59,18 @@ export class ItemRepository implements IItemRepository {
       },
     });
     return this.BuildEntity(item);
+  }
+
+  async getByList(listId: number): Promise<ItemEntity[]> {
+    const items = await this.prisma.item.findMany({
+      where: {
+        listId: listId,
+      },
+      orderBy: {
+        order: 'asc',
+      },
+    });
+    return items.map((item) => this.BuildEntity(item));
   }
 
   async delete(id: number): Promise<ItemEntity> {

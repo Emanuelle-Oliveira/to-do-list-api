@@ -15,12 +15,16 @@ import { IDeleteItemUseCase } from '../use-cases/contract/idelete-item.use-case'
 import { IGetOneItemUseCase } from '../use-cases/contract/iget-one-item.use-case';
 import { IUpdateItemUseCase } from '../use-cases/contract/iupdate-item.use-case';
 import { UpdateItemDto } from '../dto/update-item.dto';
+import { UpdateOrderItemDto } from '../dto/update-order-item.dto';
+import { IUpdateOrderItemPayload } from '../shared/iupdated-order-item.payload';
+import { IUpdateOrderItemUseCase } from '../use-cases/contract/iupdate-order-item.use-case';
 
 @Controller('item')
 export class ItemController {
   constructor(
     private readonly createItemUseCase: ICreateItemUseCase,
     private readonly updateItemUseCase: IUpdateItemUseCase,
+    private readonly updateOrderItemUseCase: IUpdateOrderItemUseCase,
     private readonly getOneItemUseCase: IGetOneItemUseCase,
     private readonly deleteItemUseCase: IDeleteItemUseCase,
   ) {}
@@ -36,6 +40,14 @@ export class ItemController {
     @Body() updateItemDto: UpdateItemDto,
   ): Promise<ItemEntity> {
     return this.updateItemUseCase.execute(id, updateItemDto);
+  }
+
+  @Patch('/order/:id')
+  updateOrderItem(
+    @Param('id') id: number,
+    @Body() updateOrderItemDto: UpdateOrderItemDto,
+  ): Promise<ItemEntity[]> {
+    return this.updateOrderItemUseCase.execute(id, updateOrderItemDto);
   }
 
   @Get('/:id')
