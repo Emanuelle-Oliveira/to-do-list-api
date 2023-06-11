@@ -17,6 +17,37 @@ export class ListRepository implements IListRepository {
     return this.BuildEntity(list);
   }
 
+  async getAll(): Promise<ListEntity[]> {
+    const lists = await this.prisma.list.findMany({
+      include: {
+        items: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    return lists.map((list) => this.BuildEntity(list));
+  }
+
+  async getOne(id: number): Promise<ListEntity> {
+    const list = await this.prisma.list.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        items: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    return this.BuildEntity(list);
+  }
+
   async delete(id: number): Promise<ListEntity> {
     const deletedList = await this.prisma.list.delete({
       where: {
