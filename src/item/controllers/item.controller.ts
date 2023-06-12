@@ -18,7 +18,16 @@ import { UpdateItemDto } from '../dto/update-item.dto';
 import { UpdateOrderItemDto } from '../dto/update-order-item.dto';
 import { IUpdateOrderItemPayload } from '../shared/iupdated-order-item.payload';
 import { IUpdateOrderItemUseCase } from '../use-cases/contract/iupdate-order-item.use-case';
+import {
+  ApiBody,
+  ApiHeader,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Item')
 @Controller('item')
 export class ItemController {
   constructor(
@@ -29,11 +38,28 @@ export class ItemController {
     private readonly deleteItemUseCase: IDeleteItemUseCase,
   ) {}
 
+  @ApiBody({
+    type: CreateItemDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Item has been successfully created.',
+  })
+  @ApiOperation({ summary: 'Create item' })
   @Post()
   createItem(@Body() createItemDto: CreateItemDto): Promise<ItemEntity> {
     return this.createItemUseCase.execute(createItemDto);
   }
 
+  @ApiBody({
+    type: UpdateItemDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Item has been successfully updated.',
+  })
+  @ApiNotFoundResponse({ description: 'Item not found.' })
+  @ApiOperation({ summary: 'Update item' })
   @Patch('/:id')
   updateItem(
     @Param('id') id: number,
@@ -42,6 +68,15 @@ export class ItemController {
     return this.updateItemUseCase.execute(id, updateItemDto);
   }
 
+  @ApiBody({
+    type: UpdateOrderItemDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Item has been successfully updated.',
+  })
+  @ApiNotFoundResponse({ description: 'Item not found.' })
+  @ApiOperation({ summary: 'Update item order and/or list' })
   @Patch('/order/:id')
   updateOrderItem(
     @Param('id') id: number,
@@ -50,11 +85,23 @@ export class ItemController {
     return this.updateOrderItemUseCase.execute(id, updateOrderItemDto);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'Item was returned successfully.',
+  })
+  @ApiNotFoundResponse({ description: 'Item not found.' })
+  @ApiOperation({ summary: 'Get an item' })
   @Get('/:id')
   getOneItem(@Param('id', ParseIntPipe) id: number): Promise<ItemEntity> {
     return this.getOneItemUseCase.execute(id);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'Item was deleted successfully.',
+  })
+  @ApiNotFoundResponse({ description: 'Item not found.' })
+  @ApiOperation({ summary: 'Delete item' })
   @Delete('/:id')
   deleteItem(@Param('id', ParseIntPipe) id: number): Promise<ItemEntity> {
     return this.deleteItemUseCase.execute(id);

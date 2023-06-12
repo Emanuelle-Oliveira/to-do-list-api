@@ -16,7 +16,15 @@ import { IGetAllListUseCase } from '../use-cases/contract/iget-all-list.use-case
 import { IGetOneListUseCase } from '../use-cases/contract/iget-one-list.use-case';
 import { IUpdateListUseCase } from '../use-cases/contract/iupdate-list.use-case';
 import { UpdateListDto } from '../dto/update-list.dto';
+import {
+  ApiBody,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('List')
 @Controller('list')
 export class ListController {
   constructor(
@@ -27,11 +35,28 @@ export class ListController {
     private readonly deleteListUseCase: IDeleteListUseCase,
   ) {}
 
+  @ApiBody({
+    type: CreateListDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'List has been successfully created.',
+  })
+  @ApiOperation({ summary: 'Create list' })
   @Post()
   createList(@Body() dtoList: CreateListDto): Promise<ListEntity> {
     return this.createListUseCase.execute(dtoList);
   }
 
+  @ApiBody({
+    type: UpdateListDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List has been successfully updated.',
+  })
+  @ApiNotFoundResponse({ description: 'List not found.' })
+  @ApiOperation({ summary: 'Update list' })
   @Patch('/:id')
   updateList(
     @Param('id') id: number,
@@ -40,16 +65,33 @@ export class ListController {
     return this.updateListUseCase.execute(id, dto);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'Lists were returned successfully.',
+  })
+  @ApiOperation({ summary: 'Get all lists' })
   @Get()
   getAllLists(): Promise<ListEntity[]> {
     return this.getAllListUseCase.execute();
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'List was returned successfully.',
+  })
+  @ApiNotFoundResponse({ description: 'List not found.' })
+  @ApiOperation({ summary: 'Get all lists' })
   @Get('/:id')
   getOneList(@Param('id', ParseIntPipe) id: number): Promise<ListEntity> {
     return this.getOneListUseCase.execute(id);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'List was deleted successfully.',
+  })
+  @ApiNotFoundResponse({ description: 'List not found.' })
+  @ApiOperation({ summary: 'Delete list' })
   @Delete('/:id')
   deleteList(@Param('id', ParseIntPipe) id: number): Promise<ListEntity> {
     return this.deleteListUseCase.execute(id);
