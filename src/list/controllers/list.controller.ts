@@ -18,6 +18,7 @@ import { IGetOneListUseCase } from '../use-cases/contract/iget-one-list.use-case
 import { IUpdateListUseCase } from '../use-cases/contract/iupdate-list.use-case';
 import { UpdateListDto } from '../dto/update-list.dto';
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiNotFoundResponse,
   ApiOperation,
@@ -43,6 +44,9 @@ export class ListController {
     status: 201,
     description: 'List has been successfully created.',
   })
+  @ApiBadRequestResponse({
+    description: 'Invalid list title.',
+  })
   @ApiOperation({ summary: 'Create list' })
   @Post()
   createList(@Body() dtoList: CreateListDto): Promise<ListEntity> {
@@ -55,6 +59,9 @@ export class ListController {
   @ApiResponse({
     status: 200,
     description: 'List has been successfully updated.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid list title.',
   })
   @ApiNotFoundResponse({ description: 'List not found.' })
   @ApiOperation({ summary: 'Update list' })
@@ -81,7 +88,7 @@ export class ListController {
     description: 'List was returned successfully.',
   })
   @ApiNotFoundResponse({ description: 'List not found.' })
-  @ApiOperation({ summary: 'Get all lists' })
+  @ApiOperation({ summary: 'Get a list' })
   @Get('/:id')
   getOneList(@Param('id', ParseIntPipe) id: number): Promise<ListEntity> {
     return this.getOneListUseCase.execute(id);
