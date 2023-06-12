@@ -5,5 +5,5 @@ export abstract class IUpdateOrderItemUseCase {
   abstract execute(
     id: number,
     dto: IUpdateOrderItemPayload,
-  ): Promise<ItemEntity[]>;
+  ): Promise<ItemEntity>;
 }

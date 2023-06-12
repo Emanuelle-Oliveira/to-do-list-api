@@ -46,7 +46,7 @@ export class ItemController {
   updateOrderItem(
     @Param('id') id: number,
     @Body() updateOrderItemDto: UpdateOrderItemDto,
-  ): Promise<ItemEntity[]> {
+  ): Promise<ItemEntity> {
     return this.updateOrderItemUseCase.execute(id, updateOrderItemDto);
   }
 

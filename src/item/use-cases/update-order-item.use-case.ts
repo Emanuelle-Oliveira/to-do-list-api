@@ -8,26 +8,25 @@ import { IUpdateOrderItemPayload } from '../shared/iupdated-order-item.payload';
 export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
-  async execute(
-    id: number,
-    dto: IUpdateOrderItemPayload,
-  ): Promise<ItemEntity[]> {
-    // Mudança dentro da própria lista
-    if (dto.currentListId === dto.targetListId) {
-      const items = await this.itemRepository.getByList(dto.currentListId);
+  async execute(id: number, dto: IUpdateOrderItemPayload): Promise<ItemEntity> {
+    const itemsCurrentList = await this.itemRepository.getByList(
+      dto.currentListId,
+    );
 
+    // Mudança dentro na própria lista
+    if (dto.currentListId === dto.targetListId) {
       if (dto.currentOrder > dto.targetOrder) {
         for (let i = dto.targetOrder; i <= dto.currentOrder; i++) {
           if (i === dto.currentOrder) {
-            items[i] = await this.itemRepository.updateOrder(
-              items[i].id,
+            itemsCurrentList[i] = await this.itemRepository.updateOrder(
+              itemsCurrentList[i].id,
               dto.targetOrder,
             );
             //items[i].order = dto.targetOrder;
           } else {
-            items[i] = await this.itemRepository.updateOrder(
-              items[i].id,
-              items[i].order + 1,
+            itemsCurrentList[i] = await this.itemRepository.updateOrder(
+              itemsCurrentList[i].id,
+              itemsCurrentList[i].order + 1,
             );
             //items[i].order = items[i].order + 1;
           }
@@ -35,24 +34,47 @@ export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
       } else if (dto.targetOrder > dto.currentOrder) {
         for (let i = dto.currentOrder; i <= dto.targetOrder; i++) {
           if (i === dto.currentOrder) {
-            items[i] = await this.itemRepository.updateOrder(
-              items[i].id,
+            itemsCurrentList[i] = await this.itemRepository.updateOrder(
+              itemsCurrentList[i].id,
               dto.targetOrder,
             );
             //items[i].order = dto.targetOrder;
           } else {
-            items[i] = await this.itemRepository.updateOrder(
-              items[i].id,
-              items[i].order - 1,
+            itemsCurrentList[i] = await this.itemRepository.updateOrder(
+              itemsCurrentList[i].id,
+              itemsCurrentList[i].order - 1,
             );
             //items[i].order = items[i].order - 1;
           }
         }
       }
-      return items;
-    } else {
       // Mudança de lista
+    } else {
+      // Lista atual
+      for (let i = dto.currentOrder; i < itemsCurrentList.length; i++) {
+        itemsCurrentList[i] = await this.itemRepository.updateOrder(
+          itemsCurrentList[i].id,
+          itemsCurrentList[i].order - 1,
+        );
+      }
+      // Lista alvo
+      const itemsTargetList = await this.itemRepository.getByList(
+        dto.targetListId,
+      );
+      for (let i = dto.targetOrder; i < itemsTargetList.length; i++) {
+        itemsTargetList[i] = await this.itemRepository.updateOrder(
+          itemsTargetList[i].id,
+          itemsTargetList[i].order + 1,
+        );
+      }
     }
+    // Item
+    const item = await this.itemRepository.updateOrder(
+      id,
+      dto.targetOrder,
+      dto.targetListId,
+    );
+    return item;
   }
 }
 

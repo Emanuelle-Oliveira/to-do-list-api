@@ -40,13 +40,18 @@ export class ItemRepository implements IItemRepository {
     return this.BuildEntity(updatedItem);
   }
 
-  async updateOrder(id: number, order: number): Promise<ItemEntity> {
+  async updateOrder(
+    id: number,
+    order: number,
+    listId?: number,
+  ): Promise<ItemEntity> {
     const updatedItem = await this.prisma.item.update({
       where: {
         id: id,
       },
       data: {
         order: order,
+        listId: listId,
       },
     });
     return this.BuildEntity(updatedItem);

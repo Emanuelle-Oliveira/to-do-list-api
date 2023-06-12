@@ -8,6 +8,17 @@ export class DeleteItemUseCase implements IDeleteItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(id: number): Promise<ItemEntity> {
+    const item = await this.itemRepository.getOne(id);
+    const items = await this.itemRepository.getByList(item.listId);
+
+    // Atualizando orders
+    for (let i = item.order; i < items.length; i++) {
+      items[i] = await this.itemRepository.updateOrder(
+        items[i].id,
+        items[i].order - 1,
+      );
+    }
+
     return this.itemRepository.delete(id);
   }
 }
