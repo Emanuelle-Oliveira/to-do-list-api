@@ -2,7 +2,7 @@ import { Injectable, Provider } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { IItemRepository } from './contract/iitem.repository';
 import { ICreateItemPayload } from '../shared/icreate-item-payload';
-import { Item, List } from '@prisma/client';
+import { Item } from '@prisma/client';
 import { ItemEntity } from '../entities/item.entity';
 import { IUpdateItemPayload } from '../shared/iupdate-item.payload';
 
