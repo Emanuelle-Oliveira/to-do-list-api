@@ -57,7 +57,7 @@ export class ListRepository implements IListRepository {
       },
     });
 
-    return this.BuildEntity(list);
+    if (list) return this.BuildEntity(list);
   }
 
   async delete(id: number): Promise<ListEntity> {

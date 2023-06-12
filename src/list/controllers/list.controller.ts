@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateListDto } from '../dto/create-list.dto';
 import { ICreateListUseCase } from '../use-cases/contract/icreate-list.use-case';

@@ -9,12 +9,11 @@ export class UpdateListUseCase implements IUpdateListUseCase {
   constructor(private readonly listRepository: IListRepository) {}
 
   execute(id: number, dto: IUpdateListPayload): Promise<ListEntity> {
-    //TRATAMENTO DE ERRO
+    // VALIDAÇÃO
+    // Se o id informado está no banco
 
     return this.listRepository.update(id, dto);
   }
-
-  //IMPLEMENTAR AS VALIDACOES AQUI
 }
 
 export const UpdateListUseCaseProvider: Provider<IUpdateListUseCase> = {

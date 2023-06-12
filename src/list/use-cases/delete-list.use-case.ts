@@ -8,6 +8,9 @@ export class DeleteListUseCase implements IDeleteListUseCase {
   constructor(private readonly listRepository: IListRepository) {}
 
   async execute(id: number): Promise<ListEntity> {
+    // VALIDAÇÃO
+    // Se o id informado está no banco
+
     return this.listRepository.delete(id);
   }
 }

@@ -8,6 +8,9 @@ export class GetOneItemUseCase implements IGetOneItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(id: number): Promise<ItemEntity> {
+    // VALIDAÇÃO
+    // Se o id informado está no banco
+
     return this.itemRepository.getOne(id);
   }
 }

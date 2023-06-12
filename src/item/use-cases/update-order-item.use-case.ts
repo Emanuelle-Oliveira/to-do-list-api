@@ -9,6 +9,13 @@ export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(id: number, dto: IUpdateOrderItemPayload): Promise<ItemEntity> {
+    // VALIDAÇÃO
+    // Se o id informado está no banco
+    // Se o order atual cadastrado para esse id é igual a currentOrder
+    // Se o id da lista atual cadastrada para esse id é igual a currentListId
+    // Se existe uma lista com id igual a targetListId
+    // Se targetOrder é menor ou igual ao tamanho da lista alvo
+
     const itemsCurrentList = await this.itemRepository.getByList(
       dto.currentListId,
     );

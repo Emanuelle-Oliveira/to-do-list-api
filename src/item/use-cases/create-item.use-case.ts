@@ -9,14 +9,13 @@ export class CreateItemUseCase implements ICreateItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(dto: ICreateItemPayload): Promise<ItemEntity> {
-    //TRATAMENTO DE ERRO
+    // VALIDAÇÃO
+    // Se o idList informado está no banco
 
     const order = await this.itemRepository.count(dto.listId);
 
     return this.itemRepository.create(dto, order);
   }
-
-  //IMPLEMENTAR O TRATAMENTO DE ERRO CASO NÃO EXISTA ESSA LISTA COM ESSE ID
 }
 
 export const CreateItemUseCaseProvider: Provider<ICreateItemUseCase> = {

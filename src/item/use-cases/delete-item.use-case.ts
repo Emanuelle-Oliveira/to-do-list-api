@@ -8,6 +8,9 @@ export class DeleteItemUseCase implements IDeleteItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(id: number): Promise<ItemEntity> {
+    // VALIDAÇÃO
+    // Se o id informado está no banco
+
     const item = await this.itemRepository.getOne(id);
     const items = await this.itemRepository.getByList(item.listId);
 

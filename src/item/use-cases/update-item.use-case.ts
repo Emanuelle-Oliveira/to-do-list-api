@@ -9,12 +9,12 @@ export class UpdateItemUseCase implements IUpdateItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   execute(id: number, dto: IUpdateItemPayload): Promise<ItemEntity> {
-    //TRATAMENTO DE ERRO
+    // VALIDAÇÃO
+    // Se o id informado está no banco
+    // Se a data final é maior ou igual que a inicial
 
     return this.itemRepository.update(id, dto);
   }
-
-  //IMPLEMENTAR AS VALIDACOES AQUI
 }
 
 export const UpdateItemUseCaseProvider: Provider<IUpdateItemUseCase> = {
