@@ -9,9 +9,6 @@ export class GetOneListUseCase implements IGetOneListUseCase {
   constructor(private readonly listRepository: IListRepository) {}
 
   async execute(id: number): Promise<ListEntity> {
-    // VALIDAÇÃO
-    // Se o id informado está no banco
-
     const list = await this.listRepository.getOne(id);
 
     if (!list) {

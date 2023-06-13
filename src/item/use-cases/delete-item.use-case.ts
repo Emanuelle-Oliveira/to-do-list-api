@@ -2,18 +2,19 @@ import { Injectable, Provider } from '@nestjs/common';
 import { ItemEntity } from '../entities/item.entity';
 import { IItemRepository } from '../repositories/contract/iitem.repository';
 import { IDeleteItemUseCase } from './contract/idelete-item.use-case';
+import { NotFoundError } from '../../common/errors/types/not-found-error';
 
 @Injectable()
 export class DeleteItemUseCase implements IDeleteItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(id: number): Promise<ItemEntity> {
-    // VALIDAÇÃO
-    // Se o id informado está no banco
-
     const item = await this.itemRepository.getOne(id);
-    const items = await this.itemRepository.getByList(item.listId);
+    if (!item) {
+      throw new NotFoundError('Item não encontrado.');
+    }
 
+    const items = await this.itemRepository.getByList(item.listId);
     // Atualizando orders
     for (let i = item.order; i < items.length; i++) {
       items[i] = await this.itemRepository.updateOrder(

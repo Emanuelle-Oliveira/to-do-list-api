@@ -83,6 +83,9 @@ export class ListController {
     status: 200,
     description: 'List has been successfully updated.',
   })
+  @ApiBadRequestResponse({
+    description: 'Invalid list orders.',
+  })
   @ApiNotFoundResponse({ description: 'List not found.' })
   @ApiOperation({ summary: 'Update list order.' })
   @Patch('/order/:id')

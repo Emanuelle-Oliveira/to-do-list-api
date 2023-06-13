@@ -16,11 +16,10 @@ import { IGetOneItemUseCase } from '../use-cases/contract/iget-one-item.use-case
 import { IUpdateItemUseCase } from '../use-cases/contract/iupdate-item.use-case';
 import { UpdateItemDto } from '../dto/update-item.dto';
 import { UpdateOrderItemDto } from '../dto/update-order-item.dto';
-import { IUpdateOrderItemPayload } from '../shared/iupdate-order-item.payload';
 import { IUpdateOrderItemUseCase } from '../use-cases/contract/iupdate-order-item.use-case';
 import {
+  ApiBadRequestResponse,
   ApiBody,
-  ApiHeader,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -45,6 +44,9 @@ export class ItemController {
     status: 201,
     description: 'Item has been successfully created.',
   })
+  @ApiBadRequestResponse({
+    description: 'Invalid item attributes.',
+  })
   @ApiOperation({ summary: 'Create item' })
   @Post()
   createItem(@Body() createItemDto: CreateItemDto): Promise<ItemEntity> {
@@ -57,6 +59,9 @@ export class ItemController {
   @ApiResponse({
     status: 200,
     description: 'Item has been successfully updated.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid item attributes.',
   })
   @ApiNotFoundResponse({ description: 'Item not found.' })
   @ApiOperation({ summary: 'Update item' })
@@ -74,6 +79,9 @@ export class ItemController {
   @ApiResponse({
     status: 200,
     description: 'Item has been successfully updated.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid item attributes.',
   })
   @ApiNotFoundResponse({ description: 'Item not found.' })
   @ApiOperation({ summary: 'Update item order and/or list.' })

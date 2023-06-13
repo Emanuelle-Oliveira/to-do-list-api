@@ -14,8 +14,6 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
 
-  //app.useGlobalFilters(new HttpExceptionFilter());
-
   app.useGlobalInterceptors(new NotFoundInterceptor());
 
   const config = new DocumentBuilder()

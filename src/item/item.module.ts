@@ -6,11 +6,13 @@ import { DeleteItemUseCaseProvider } from './use-cases/delete-item.use-case';
 import { GetOneItemUseCaseProvider } from './use-cases/get-one-item.use-case';
 import { UpdateItemUseCaseProvider } from './use-cases/update-item.use-case';
 import { UpdateOrderItemUseCaseProvider } from './use-cases/update-order-item.use-case';
+import { ListRepositoryProvider } from '../list/repositories/list.repository';
 
 @Module({
   controllers: [ItemController],
   providers: [
     ItemRepositoryProvider,
+    ListRepositoryProvider,
     CreateItemUseCaseProvider,
     UpdateItemUseCaseProvider,
     UpdateOrderItemUseCaseProvider,

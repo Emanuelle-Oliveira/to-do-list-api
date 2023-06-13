@@ -63,7 +63,8 @@ export class ItemRepository implements IItemRepository {
         id: id,
       },
     });
-    return this.BuildEntity(item);
+
+    if (item) return this.BuildEntity(item);
   }
 
   async getByList(listId: number): Promise<ItemEntity[]> {
