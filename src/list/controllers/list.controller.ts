@@ -7,7 +7,6 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CreateListDto } from '../dto/create-list.dto';
 import { ICreateListUseCase } from '../use-cases/contract/icreate-list.use-case';
@@ -20,6 +19,7 @@ import { UpdateListDto } from '../dto/update-list.dto';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiConflictResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -85,6 +85,9 @@ export class ListController {
   })
   @ApiBadRequestResponse({
     description: 'Invalid list orders.',
+  })
+  @ApiConflictResponse({
+    description: 'Conflict: Invalid list orders.',
   })
   @ApiNotFoundResponse({ description: 'List not found.' })
   @ApiOperation({ summary: 'Update list order.' })

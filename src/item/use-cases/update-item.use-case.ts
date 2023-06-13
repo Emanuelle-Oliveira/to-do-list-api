@@ -10,8 +10,6 @@ export class UpdateItemUseCase implements IUpdateItemUseCase {
   constructor(private readonly itemRepository: IItemRepository) {}
 
   async execute(id: number, dto: IUpdateItemPayload): Promise<ItemEntity> {
-    // VALIDAÇÃO
-    // Se a data final é maior ou igual que a inicial
     const item = await this.itemRepository.getOne(id);
     if (!item) {
       throw new NotFoundError('Item não encontrado.');

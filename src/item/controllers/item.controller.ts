@@ -20,6 +20,7 @@ import { IUpdateOrderItemUseCase } from '../use-cases/contract/iupdate-order-ite
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiConflictResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -82,6 +83,9 @@ export class ItemController {
   })
   @ApiBadRequestResponse({
     description: 'Invalid item attributes.',
+  })
+  @ApiConflictResponse({
+    description: 'Conflict: Invalid item attributes.',
   })
   @ApiNotFoundResponse({ description: 'Item not found.' })
   @ApiOperation({ summary: 'Update item order and/or list.' })

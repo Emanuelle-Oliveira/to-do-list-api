@@ -3,24 +3,45 @@ import { IItemRepository } from '../repositories/contract/iitem.repository';
 import { ItemEntity } from '../entities/item.entity';
 import { IUpdateOrderItemUseCase } from './contract/iupdate-order-item.use-case';
 import { IUpdateOrderItemPayload } from '../shared/iupdate-order-item.payload';
+import { NotFoundError } from '../../common/errors/types/not-found-error';
+import { ConflictError } from '../../common/errors/types/conflict-error';
+import { IListRepository } from '../../list/repositories/contract/ilist.repository';
 
 @Injectable()
 export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
-  constructor(private readonly itemRepository: IItemRepository) {}
+  constructor(
+    private readonly itemRepository: IItemRepository,
+    private readonly listRepository: IListRepository,
+  ) {}
 
   async execute(id: number, dto: IUpdateOrderItemPayload): Promise<ItemEntity> {
-    // VALIDAÇÃO
-    // Se o id informado está no banco
-    // Se o order atual cadastrado para esse id é igual a currentOrder
-    // Se o id da lista atual cadastrada para esse id é igual a currentListId
-    // Se existe uma lista com id igual a targetListId
-    // Se targetOrder é menor ou igual ao tamanho da lista alvo
+    const returnedItem = await this.itemRepository.getOne(id);
+    if (!returnedItem) {
+      throw new NotFoundError('Item não encontrado.');
+    }
+
+    if (returnedItem.order !== dto.currentOrder) {
+      throw new ConflictError('Ordem atual inválida.');
+    }
+
+    if (returnedItem.listId !== dto.currentListId) {
+      throw new ConflictError('Lista atual inválida.');
+    }
+
+    const returnedList = await this.listRepository.getOne(dto.targetListId);
+    if (!returnedList) {
+      throw new ConflictError('Lista alvo inválida.');
+    }
+
+    const amountOfItems = await this.itemRepository.count(dto.targetListId);
+    if (dto.targetOrder >= amountOfItems || dto.targetOrder < 0) {
+      throw new ConflictError('Ordem alvo inválida.');
+    }
 
     const itemsCurrentList = await this.itemRepository.getByList(
       dto.currentListId,
     );
 
-    // Mudança dentro na própria lista
     if (dto.currentListId === dto.targetListId) {
       if (dto.currentOrder > dto.targetOrder) {
         for (let i = dto.targetOrder; i <= dto.currentOrder; i++) {
@@ -29,13 +50,11 @@ export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
               itemsCurrentList[i].id,
               dto.targetOrder,
             );
-            //items[i].order = dto.targetOrder;
           } else {
             itemsCurrentList[i] = await this.itemRepository.updateOrder(
               itemsCurrentList[i].id,
               itemsCurrentList[i].order + 1,
             );
-            //items[i].order = items[i].order + 1;
           }
         }
       } else if (dto.targetOrder > dto.currentOrder) {
@@ -45,26 +64,22 @@ export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
               itemsCurrentList[i].id,
               dto.targetOrder,
             );
-            //items[i].order = dto.targetOrder;
           } else {
             itemsCurrentList[i] = await this.itemRepository.updateOrder(
               itemsCurrentList[i].id,
               itemsCurrentList[i].order - 1,
             );
-            //items[i].order = items[i].order - 1;
           }
         }
       }
-      // Mudança de lista
     } else {
-      // Lista atual
       for (let i = dto.currentOrder; i < itemsCurrentList.length; i++) {
         itemsCurrentList[i] = await this.itemRepository.updateOrder(
           itemsCurrentList[i].id,
           itemsCurrentList[i].order - 1,
         );
       }
-      // Lista alvo
+
       const itemsTargetList = await this.itemRepository.getByList(
         dto.targetListId,
       );
@@ -75,7 +90,7 @@ export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
         );
       }
     }
-    // Item
+
     const item = await this.itemRepository.updateOrder(
       id,
       dto.targetOrder,

@@ -15,7 +15,7 @@ export class DeleteItemUseCase implements IDeleteItemUseCase {
     }
 
     const items = await this.itemRepository.getByList(item.listId);
-    // Atualizando orders
+
     for (let i = item.order; i < items.length; i++) {
       items[i] = await this.itemRepository.updateOrder(
         items[i].id,
