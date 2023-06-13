@@ -1,4 +1,4 @@
-import { IUpdateOrderItemPayload } from '../shared/iupdated-order-item.payload';
+import { IUpdateOrderItemPayload } from '../shared/iupdate-order-item.payload';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 

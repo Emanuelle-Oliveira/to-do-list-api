@@ -16,7 +16,7 @@ import { IGetOneItemUseCase } from '../use-cases/contract/iget-one-item.use-case
 import { IUpdateItemUseCase } from '../use-cases/contract/iupdate-item.use-case';
 import { UpdateItemDto } from '../dto/update-item.dto';
 import { UpdateOrderItemDto } from '../dto/update-order-item.dto';
-import { IUpdateOrderItemPayload } from '../shared/iupdated-order-item.payload';
+import { IUpdateOrderItemPayload } from '../shared/iupdate-order-item.payload';
 import { IUpdateOrderItemUseCase } from '../use-cases/contract/iupdate-order-item.use-case';
 import {
   ApiBody,
@@ -76,7 +76,7 @@ export class ItemController {
     description: 'Item has been successfully updated.',
   })
   @ApiNotFoundResponse({ description: 'Item not found.' })
-  @ApiOperation({ summary: 'Update item order and/or list' })
+  @ApiOperation({ summary: 'Update item order and/or list.' })
   @Patch('/order/:id')
   updateOrderItem(
     @Param('id') id: number,

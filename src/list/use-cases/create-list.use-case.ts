@@ -7,8 +7,9 @@ import { ListEntity } from '../entities/list.entity';
 export class CreateListUseCase implements ICreateListUseCase {
   constructor(private readonly listRepository: IListRepository) {}
 
-  execute(dto: ICreateListPayload): Promise<ListEntity> {
-    return this.listRepository.create(dto);
+  async execute(dto: ICreateListPayload): Promise<ListEntity> {
+    const order = await this.listRepository.count();
+    return this.listRepository.create(dto, order);
   }
 }
 

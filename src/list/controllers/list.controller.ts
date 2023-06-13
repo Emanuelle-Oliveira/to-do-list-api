@@ -25,6 +25,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdateOrderListDto } from '../dto/update-order-list.dto';
+import { IUpdateOrderListUseCase } from '../use-cases/contract/iupdate-order-list.use-case';
 
 @ApiTags('List')
 @Controller('list')
@@ -32,6 +34,7 @@ export class ListController {
   constructor(
     private readonly createListUseCase: ICreateListUseCase,
     private readonly updateListUseCase: IUpdateListUseCase,
+    private readonly updateOrderListUseCase: IUpdateOrderListUseCase,
     private readonly getAllListUseCase: IGetAllListUseCase,
     private readonly getOneListUseCase: IGetOneListUseCase,
     private readonly deleteListUseCase: IDeleteListUseCase,
@@ -71,6 +74,23 @@ export class ListController {
     @Body() dto: UpdateListDto,
   ): Promise<ListEntity> {
     return this.updateListUseCase.execute(id, dto);
+  }
+
+  @ApiBody({
+    type: UpdateOrderListDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List has been successfully updated.',
+  })
+  @ApiNotFoundResponse({ description: 'List not found.' })
+  @ApiOperation({ summary: 'Update list order.' })
+  @Patch('/order/:id')
+  updateOrderList(
+    @Param('id') id: number,
+    @Body() updateOrderListDto: UpdateOrderListDto,
+  ): Promise<ListEntity> {
+    return this.updateOrderListUseCase.execute(id, updateOrderListDto);
   }
 
   @ApiResponse({

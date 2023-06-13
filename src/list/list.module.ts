@@ -6,6 +6,7 @@ import { DeleteListUseCaseProvider } from './use-cases/delete-list.use-case';
 import { GetAllListUseCaseProvider } from './use-cases/get-all-list.use-case';
 import { GetOneListUseCaseProvider } from './use-cases/get-one-list.use-case';
 import { UpdateListUseCaseProvider } from './use-cases/update-list.use-case';
+import { UpdateOrderListUseCaseProvider } from './use-cases/update-order-list.use-case';
 
 @Module({
   controllers: [ListController],
@@ -13,6 +14,7 @@ import { UpdateListUseCaseProvider } from './use-cases/update-list.use-case';
     ListRepositoryProvider,
     CreateListUseCaseProvider,
     UpdateListUseCaseProvider,
+    UpdateOrderListUseCaseProvider,
     GetAllListUseCaseProvider,
     GetOneListUseCaseProvider,
     DeleteListUseCaseProvider,
@@ -21,6 +23,7 @@ import { UpdateListUseCaseProvider } from './use-cases/update-list.use-case';
     ListRepositoryProvider,
     CreateListUseCaseProvider,
     UpdateListUseCaseProvider,
+    UpdateOrderListUseCaseProvider,
     GetAllListUseCaseProvider,
     GetOneListUseCaseProvider,
     DeleteListUseCaseProvider,

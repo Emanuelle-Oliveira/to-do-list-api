@@ -4,18 +4,25 @@ import { ICreateListPayload } from '../shared/icreate-list-payload';
 import { Injectable, Provider } from '@nestjs/common';
 import { Item, List } from '@prisma/client';
 import { ListEntity } from '../entities/list.entity';
-import { ItemEntity } from '../../item/entities/item.entity';
 import { IUpdateListPayload } from '../shared/iupdate-list.payload';
+import { ItemEntity } from '../../item/entities/item.entity';
 
 @Injectable()
 export class ListRepository implements IListRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: ICreateListPayload): Promise<ListEntity> {
+  async create(dto: ICreateListPayload, order: number): Promise<ListEntity> {
     const list = await this.prisma.list.create({
-      data: dto,
+      data: {
+        titleList: dto.titleList,
+        order: order,
+      },
     });
     return this.BuildEntity(list);
+  }
+
+  async count(): Promise<number> {
+    return this.prisma.list.count();
   }
 
   async update(id: number, dto: IUpdateListPayload): Promise<ListEntity> {
@@ -29,6 +36,18 @@ export class ListRepository implements IListRepository {
     return this.BuildEntity(updatedList);
   }
 
+  async updateOrder(id: number, order: number): Promise<ListEntity> {
+    const updatedList = await this.prisma.list.update({
+      where: {
+        id: id,
+      },
+      data: {
+        order: order,
+      },
+    });
+    return this.BuildEntity(updatedList);
+  }
+
   async getAll(): Promise<ListEntity[]> {
     const lists = await this.prisma.list.findMany({
       include: {
@@ -37,6 +56,9 @@ export class ListRepository implements IListRepository {
             order: 'asc',
           },
         },
+      },
+      orderBy: {
+        order: 'asc',
       },
     });
 

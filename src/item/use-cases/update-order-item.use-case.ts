@@ -2,7 +2,7 @@ import { Injectable, Provider } from '@nestjs/common';
 import { IItemRepository } from '../repositories/contract/iitem.repository';
 import { ItemEntity } from '../entities/item.entity';
 import { IUpdateOrderItemUseCase } from './contract/iupdate-order-item.use-case';
-import { IUpdateOrderItemPayload } from '../shared/iupdated-order-item.payload';
+import { IUpdateOrderItemPayload } from '../shared/iupdate-order-item.payload';
 
 @Injectable()
 export class UpdateOrderItemUseCase implements IUpdateOrderItemUseCase {
