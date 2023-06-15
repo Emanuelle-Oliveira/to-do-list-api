@@ -14,6 +14,15 @@ export class DeleteListUseCase implements IDeleteListUseCase {
       throw new NotFoundError('Lista não encontrada.');
     }
 
+    const lists = await this.listRepository.getAll();
+
+    for (let i = list.order; i < lists.length; i++) {
+      lists[i] = await this.listRepository.updateOrder(
+        lists[i].id,
+        lists[i].order - 1,
+      );
+    }
+
     return this.listRepository.delete(id);
   }
 }
