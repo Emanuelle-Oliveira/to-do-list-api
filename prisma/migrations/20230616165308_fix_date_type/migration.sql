@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "item" ALTER COLUMN "startDate" SET DATA TYPE DATE,
+ALTER COLUMN "finalDate" SET DATA TYPE DATE;

@@ -23,8 +23,8 @@ model Item {
   id          Int       @id @default(autoincrement())
   titleItem   String    @db.VarChar(250)
   description String?
-  startDate   DateTime?
-  finalDate   DateTime?
+  startDate   DateTime? @db.Date
+  finalDate   DateTime? @db.Date
   order       Int
   List        List      @relation(fields: [listId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "FK_Item_List")
   listId      Int
