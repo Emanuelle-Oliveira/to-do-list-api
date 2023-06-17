@@ -8,8 +8,8 @@ Na arquitetura do sistema, foram aplicadas boas práticas de programação, como
 Toda a API foi documentada com o Swagger.
 
 ## Tecnologias Usadas
-Nest.js
-TypeScript
-PrismaORM
-Swagger
+* Nest.js
+* TypeScript
+* PrismaORM
+* Swagger
 
